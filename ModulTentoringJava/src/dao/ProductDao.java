@@ -13,10 +13,6 @@ import model.Product;
 public class ProductDao {
     protected DbConnection dbCon = new DbConnection();
     protected Connection con;
-    
-     // Query untuk batch update
-    private static final String UPDATE_QUERY = 
-        "UPDATE product SET name = ?, type = ?, price = ?, stock = ? WHERE product_id = ?";
 
     public void create(Product product){
         con = dbCon.makeConnection();
@@ -137,6 +133,10 @@ public class ProductDao {
         dbCon.closeConnection();
         return product;
     }
+    
+     // Query untuk batch update
+    private static final String UPDATE_QUERY = 
+        "UPDATE product SET name = ?, type = ?, price = ?, stock = ? WHERE product_id = ?";
     
     public void batchUpdate(Connection connection, List<Product> products) throws SQLException {
         PreparedStatement statement = null;

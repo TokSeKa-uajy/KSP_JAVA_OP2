@@ -1,0 +1,28 @@
+public void batchUpdate(Connection connection, List<Product> products) throws SQLException {
+    PreparedStatement statement = null;
+    try {
+        // Menyiapkan query SQL untuk melakukan batch update
+        statement = connection.prepareStatement(UPDATE_QUERY);
+
+        // Iterasi untuk setiap produk dalam daftar
+        for (Product product : products) {
+            // Mengisi parameter pada query
+            statement.setString(1, product.getName());  // Mengisi nama produk
+            statement.setString(2, product.getType());  // Mengisi tipe produk
+            statement.setBigDecimal(3, product.getPrice());  // Mengisi harga produk
+            statement.setInt(4, product.getStock());  // Mengisi stok produk
+            statement.setInt(5, product.getId());  // Mengisi ID produk
+
+            // Menambahkan ke batch
+            statement.addBatch();
+        }
+
+        // Menjalankan semua perintah dalam batch
+        statement.executeBatch();
+    } finally {
+        // Menutup statement untuk menghindari kebocoran sumber daya
+        if (statement != null) {
+            statement.close();
+        }
+    }
+}
